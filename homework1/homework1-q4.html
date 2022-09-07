@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html>
+<style>
+    .select-style {
+        position: relative;
+        font-family: Arial;
+    }
+    
+    .select-selected::after {
+        position: absolute;
+    }
+    
+    .select-style ::after {
+        position: absolute;
+        content: "";
+        top: 14px;
+        right: 10px;
+        width: 0;
+        height: 0;
+        border: 6px solid transparent;
+        border-color: #fff transparent transparent transparent;
+    }
+    
+    .select-hide {
+        display: none;
+    }
+</style>
+
+<body>
+    <div class="select-style" style="width: 150px">
+        <label for="city">Choose a city: </label>
+        <select name="cities" id="cities">
+            <option value="newark">Newark</option>
+            <option value="Santa Clara">Santa Clara</option>
+            <option value="union City">Union City</option>
+            <option value="albany">Albany</option>
+            <option value="daly city">Daly City</option>
+            <option value="san jose">San Jose</option>
+      </select>
+    </div>
+</body>
+
+</html>
