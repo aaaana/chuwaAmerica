@@ -13,46 +13,52 @@ console.log(
     "----------------------------Question #1-1----------------------------------"
 );
 
-newValue = itemObject.map(doubleValue);
-console.log(newValue);
-
-function doubleValue(item) {
-    const result = [];
-    return {
-        quantity: item.quantity * 2,
-        price: item.price * 2,
-    };
-}
+const doubleValue = (objArray) => {
+    return objArray.map(({ quantity, price }) => {
+        return {
+            quantity: quantity * 2,
+            price: price * 2,
+        };
+    });
+};
 
 // Q1-2
-console.log(
-    "----------------------------Question #1-2----------------------------------"
-);
 
-result = itemObject.map(filterValue);
-console.log(result);
+const filterByCondition = (objArray) => {
+    return objArray.filter(({ quantity, price }) => {
+        return quantity > 2 && price > 300;
+    });
+};
 
-function filterValue(items) {
-    var result = [];
-    return [items.quantity * 2, items.price * 2];
-}
+// function filterValue(items) {
+//     var result = [];
+//     return [items.quantity * 2, items.price * 2];
+// }
 
 // Q1-3 Given the array, implement a
 // function to calculate the total value of the items.
-console.log(
-    "----------------------------Question #1-3----------------------------------"
-);
 
-function totalVal(items) {
-    let total = 0;
-    items.map(({ quantity, price }) => {
-        total += quantity * price;
-    });
-    return total;
-}
+const totalValue = (objArray) => {
+    return objArray.reduce((acc, { quantity, price }) => {
+        return acc + quantity * price;
+    }, 0);
+};
 
-console.log("Q1-3: total_value=", totalVal(itemObject));
+// function totalVal(items) {
+//     let total = 0;
+//     items.map(({ quantity, price }) => {
+//         total += quantity * price;
+//     });
+//     return total;
+// }
+doubleVal = doubleValue(itemObject);
+console.log(doubleVal);
 
+filterVal = filterByCondition(itemObject);
+console.log(filterVal);
+
+totalVal = totalValue(itemObject);
+console.log(totalVal);
 // total = itemObject.map(totalValue);
 // console.log(total);
 // var sum = 0;
@@ -70,11 +76,14 @@ console.log(
 );
 const string =
     "Perhaps The Easiest-to-understand Case For Reduce Is To Return The Sum Of All The Elements In An Array";
-const str1 = string
-    .replace(/[^\w\s]/gi, " ")
-    .replace(/  +/g, " ")
-    .toLocaleLowerCase();
-console.log(str1);
+// const str1 = string
+//     .replace(/[^\w\s]/gi, " ")
+//     .replace(/  +/g, " ")
+//     .toLocaleLowerCase();
+const strConverter = (str) => {
+    return str.split(/[- ]+/).join(" ").trim().toLowerCase();
+};
+console.log(strConverter(string));
 console.log(
     "--------------------------Question #3------------------------------------"
 );
@@ -93,17 +102,36 @@ const second = [
     { uuid: 2, role: "associate" },
 ];
 
-const mergeArrays = (arr1 = [], arr2 = []) => {
-    let res = [];
-    res = arr1.map((obj) => {
-        const index = arr2.findIndex((el) => el["uuid"] == obj["uuid"]);
-        const { role } = index !== -1 ? arr2[index] : {};
-        return {
-            ...obj,
-            role,
-        };
-    });
-    return res;
-};
+// const mergeArrays = (arr1 = [], arr2 = []) => {
+//     let res = [];
+//     res = arr1.map((obj) => {
+//         const index = arr2.findIndex((el) => el["uuid"] == obj["uuid"]);
+//         const { role } = index !== -1 ? arr2[index] : {};
+//         return {
+//             ...obj,
+//             role,
+//         };
+//     });
+//     return res;
+// };
 
-console.log(mergeArrays(first, second));
+const mergeTwoArray = (first, second) => {
+    const map = {};
+    [...first, ...second].forEach(({ uuid, role, name }) => {
+        if (!map[uuid]) {
+            map[uuid] = {
+                uuid,
+                ... { role: role ? role : null },
+                ... { name: name ? name : null },
+            };
+        } else {
+            map[uuid] = {
+                ...map[uuid],
+                ...(role && { role: role ? role : null }),
+                ...(name && { name: name ? name : null }),
+            };
+        }
+    });
+    return Object.values(map).sort((left, right) => left - right);
+};
+console.log(mergeTwoArray(first, second));
